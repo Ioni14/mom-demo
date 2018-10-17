@@ -1,0 +1,75 @@
+version: '3.7'
+networks:
+    app: ~
+services:
+    producer:
+        build:
+            context: ./docker/php
+        hostname: ${COMPOSE_PROJECT_NAME}-producer
+        volumes:
+            - ./:/var/www/html
+            - ./docker/php/php-fpm.conf:/etc/php/7.2/fpm/php-fpm.conf
+            - ./docker/php/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
+            - ./docker/php/php.ini:/etc/php/7.2/fpm/php.ini
+            - ./docker/php/php.ini:/etc/php/7.2/cli/php.ini
+        env_file:
+            - .env
+        environment:
+            - COMPOSER_CACHE_DIR=/dev/null
+        networks:
+            - app
+    consumer:
+        build:
+            context: ./docker/php
+        hostname: ${COMPOSE_PROJECT_NAME}-consumer
+        volumes:
+            - ./:/var/www/html
+            - ./docker/php/php-fpm.conf:/etc/php/7.2/fpm/php-fpm.conf
+            - ./docker/php/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
+            - ./docker/php/php.ini:/etc/php/7.2/fpm/php.ini
+            - ./docker/php/php.ini:/etc/php/7.2/cli/php.ini
+        env_file:
+            - .env
+        environment:
+            - COMPOSER_CACHE_DIR=/dev/null
+        networks:
+            - app
+    rabbitmq:
+        image: rabbitmq:3.7-management-alpine
+        hostname: ${COMPOSE_PROJECT_NAME}-rabbitmq
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=admin
+        networks:
+            - app
+        ports:
+            - 127.0.0.1:8080:15672
+    zookeeper:
+        image: confluentinc/cp-zookeeper:5.0.0
+        hostname: ${COMPOSE_PROJECT_NAME}-zookeeper
+        environment:
+            - ZOOKEEPER_CLIENT_PORT=2181
+        networks:
+            - app
+    kafka:
+        image: confluentinc/cp-kafka:5.0.0
+        hostname: ${COMPOSE_PROJECT_NAME}-kafka
+        depends_on:
+            - zookeeper
+        environment:
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+            - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+        networks:
+            - app
+    kafka-manager:
+        image: sheepkiller/kafka-manager
+        hostname: ${COMPOSE_PROJECT_NAME}-kafka-manager
+        depends_on:
+            - zookeeper
+        environment:
+            - ZK_HOSTS=zookeeper:2181
+        networks:
+            - app
+        ports:
+            - 9000:9000
