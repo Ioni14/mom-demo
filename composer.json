@@ -6,8 +6,12 @@
         "ext-amqp": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "ext-pcntl": "*",
-        "nmred/kafka-php": "v0.2.0.8",
+        "ext-rdkafka": "*",
+        "endroid/twitter": "^2.0",
+        "enqueue/rdkafka": "^0.8.38",
+        "ruflin/elastica": "^6.0",
         "symfony/amqp-pack": "^1.0",
         "symfony/console": "*",
         "symfony/dotenv": "*",
@@ -63,7 +67,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "4.1.*"
         }
     }

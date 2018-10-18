@@ -1,6 +1,8 @@
 version: '3.7'
 networks:
     app: ~
+volumes:
+    elastic: ~
 services:
     producer:
         build:
@@ -12,6 +14,8 @@ services:
             - ./docker/php/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
             - ./docker/php/php.ini:/etc/php/7.2/fpm/php.ini
             - ./docker/php/php.ini:/etc/php/7.2/cli/php.ini
+            - ./docker/php/rdkafka.ini:/etc/php/7.2/fpm/conf.d/20-kafka.ini
+            - ./docker/php/rdkafka.ini:/etc/php/7.2/cli/conf.d/20-kafka.ini
         env_file:
             - .env
         environment:
@@ -28,6 +32,8 @@ services:
             - ./docker/php/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
             - ./docker/php/php.ini:/etc/php/7.2/fpm/php.ini
             - ./docker/php/php.ini:/etc/php/7.2/cli/php.ini
+            - ./docker/php/rdkafka.ini:/etc/php/7.2/fpm/conf.d/20-kafka.ini
+            - ./docker/php/rdkafka.ini:/etc/php/7.2/cli/conf.d/20-kafka.ini
         env_file:
             - .env
         environment:
@@ -73,3 +79,23 @@ services:
             - app
         ports:
             - 9000:9000
+    elastic:
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+        hostname: ${COMPOSE_PROJECT_NAME}-elastic
+        volumes:
+            - elastic:/usr/share/elasticsearch/data
+        environment:
+            - discovery.type=single-node
+        networks:
+            - app
+        ports:
+            - 9200:9200
+    kibana:
+        image: docker.elastic.co/kibana/kibana:6.4.2
+        hostname: ${COMPOSE_PROJECT_NAME}-kibana
+        environment:
+            - ELASTICSEARCH_URL=http://elastic:9200
+        networks:
+            - app
+        ports:
+            - 5601:5601

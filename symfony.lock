@@ -1,6 +1,6 @@
 {
-    "amphp/amp": {
-        "version": "v1.2.2"
+    "abraham/twitteroauth": {
+        "version": "0.7.4"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -23,11 +23,38 @@
             "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
         }
     },
+    "elasticsearch/elasticsearch": {
+        "version": "v6.0.1"
+    },
+    "endroid/installer": {
+        "version": "1.0.7"
+    },
+    "endroid/twitter": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "72d737350a91c4e1d5d5e804dea7df5e21337a7e"
+        }
+    },
+    "enqueue/rdkafka": {
+        "version": "0.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.8",
+            "ref": "bd8104c0f393f98da53160df5b0cbc6cfa4add2f"
+        }
+    },
+    "guzzlehttp/ringphp": {
+        "version": "1.1.1"
+    },
+    "guzzlehttp/streams": {
+        "version": "3.0.0"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
-    },
-    "nmred/kafka-php": {
-        "version": "v0.2.0.8"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -49,6 +76,15 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "queue-interop/queue-interop": {
+        "version": "0.6.2"
+    },
+    "react/promise": {
+        "version": "v2.7.0"
+    },
+    "ruflin/elastica": {
+        "version": "6.0.2"
     },
     "symfony/amqp-pack": {
         "version": "v1.0.11"

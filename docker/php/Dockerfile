@@ -42,7 +42,8 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && apt-ge
         php-pear \
         php7.2-dev \
     && pecl install xdebug-2.6.0 \
-    && apt-get remove -y --purge software-properties-common make php-pear php7.2-dev \
+    && apt-get install --no-install-recommends -y librdkafka-dev librdkafka1 && pecl install rdkafka \
+    && apt-get remove -y --purge software-properties-common make php-pear php7.2-dev librdkafka-dev \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && mkdir -p /run/php \

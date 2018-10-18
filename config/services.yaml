@@ -33,3 +33,25 @@ services:
     App\Amqp\AmqpTransportFactory:
         arguments: ['@messenger.transport.encoder', '@messenger.transport.decoder', '%kernel.debug%']
         tags: [messenger.transport_factory]
+
+    RdKafka\Conf:
+        # see https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
+        calls:
+            - { method: set, arguments: ['group.id', 'my-demo-app'] }
+            - { method: set, arguments: ['metadata.broker.list', 'kafka:9092'] }
+
+    Enqueue\RdKafka\RdKafkaConnectionFactory:
+        arguments:
+            -
+                global:
+                    group.id: 'my-demo-app'
+                    metadata.broker.list: 'kafka:9092'
+                    enable.auto.commit: 'false'
+                topic:
+                    auto.offset.reset: 'beginning'
+
+    Elastica\Client:
+        arguments:
+            -
+                host: 'elastic'
+                port: '9200'

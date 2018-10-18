@@ -26,11 +26,9 @@ class AmqpReceiver implements ReceiverInterface
     {
         while (!$this->shouldStop) {
             $AMQPEnvelope = $this->connection->get();
-            dump($AMQPEnvelope);
             if (null === $AMQPEnvelope) {
                 $handler(null);
 
-                dump(microtime(true));
                 usleep($this->connection->getConnectionCredentials()['loop_sleep'] ?? 200000);
                 if (\function_exists('pcntl_signal_dispatch')) {
                     pcntl_signal_dispatch();
