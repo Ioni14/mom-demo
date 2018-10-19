@@ -38,6 +38,8 @@ class RetrieveTweetsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        // TODO : remove endroid/twitter, use https://github.com/jublo/codebird-php
+
         $lastId = null;
 
         $context = $this->kafkaConnection->createContext();
